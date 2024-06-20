@@ -90,18 +90,28 @@ const App = () => {
     if (money >= fighter.price) {
       setMoney(money - fighter.price);
       setTeam([...team, fighter]);
-      setTotalStrength(totalStrength + fighter.strength)
+      setTotalStrength(totalStrength + fighter.strength);
       setTotalAgility(totalAgility + fighter.agility);
     } else {
       console.log("You don't have enough money to purchase this fighter!" )
     }
   };
 
+  const handleRemoveFighter = (idx) => {
+    const fighter = team[idx];
+    const teamChange = team.filter((i) => i !== idx);
+    setTeam(teamChange);
+    setMoney(money + fighter.price);
+    setTotalStrength(totalStrength - fighter.strength);
+    setTotalAgility(totalAgility - fighter.agility);
+  }
+
 
   return (
     <>
-    <h1>Zombie Fighters!</h1>
+    <h1>Zombie Fighters Available!</h1>
     <div>
+      <h3>{money}</h3>
     <ul>
       {zombieFighters.map((fighter, idx) => {
         return <li  key={idx}>
@@ -110,14 +120,24 @@ const App = () => {
           <p>Strength: {fighter.strength}</p>
           <p>Agility: {fighter.agility}</p>
           <p>Fighter Image: {fighter.img}</p>
-          <button onClick={handleAddFighter}>Add</button>
+          <button onClick={handleAddFighter}>Add Team Mate</button>
           </li>
       })}
     </ul>
     </div>
-    
     <div>
-      <h3>{money}</h3>
+      <h2>My Fighters!</h2>
+      <ul>
+        {team.map((teamMate, idx) => {
+          return <li key={idx}>
+            <h3>Fighter Name: {teamMate.name}</h3>
+            <p>Team mate Orice: {teamMate.price}</p>
+            <p>Strength: {teamMate.strength}</p>
+            <p>Agility: {teamMate.agility}</p>
+            <button onClick={() => handleRemoveFighter(idx)}>Remove Team Mate</button>
+          </li>
+        })}
+      </ul>
     </div>
     </>
   );
